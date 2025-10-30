@@ -29,14 +29,3 @@ ENV/
 .DS_Store
 Thumbs.db
 ehthumbs.db
-
-# === Streamlit Cache ===
-.streamlit/
-*.streamlit-cache/
-
-# === Other folders ===
-data/
-scrits/
-omniparse/
-models/*.pth
-models/*.pth
