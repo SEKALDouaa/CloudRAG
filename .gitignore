@@ -1,0 +1,42 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# === VS Code ===
+.vscode/
+
+# === Environment ===
+.venv/
+env/
+venv/
+ENV/
+*.env
+.env.*
+.env
+
+# === Jupyter Notebooks (optional) ===
+.ipynb_checkpoints/
+
+# === Mac / Windows system files ===
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# === Streamlit Cache ===
+.streamlit/
+*.streamlit-cache/
+
+# === Other folders ===
+data/
+scrits/
+omniparse/
+models/*.pth
+models/*.pth
