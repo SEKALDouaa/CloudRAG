@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from ..services.treatment_pipeline_service import process_document_pipeline  # rename this to something like process_document_pipeline if desired
+from ..services.treatment_pipeline_service import process_document_pipeline
 import traceback
 import os
 
@@ -14,8 +14,8 @@ def process_document():
 
     files = request.files.getlist("files")
     processed_documents = []
-    current_user = get_jwt_identity()
-
+    current_user = get_jwt_identity()  
+    
     try:
         for file in files:
             file_path = f"/tmp/{file.filename}"
@@ -25,7 +25,8 @@ def process_document():
 
             document_id = process_document_pipeline(
                 file_path,
-                document_url=document_url
+                document_url=document_url,
+                user_email=current_user
             )
 
             processed_documents.append({

@@ -15,3 +15,6 @@ class DocumentSchema(ma.SQLAlchemySchema):
     author = ma.auto_field(allow_none=True)
     date = ma.auto_field(allow_none=True)
     tags = fields.List(fields.Str(), allow_none=True)
+
+    # 🔗 Link to user
+    user_email = ma.auto_field(required=True)  # store the email that owns this document
