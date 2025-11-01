@@ -1,9 +1,9 @@
 from flask import Flask
 import os
-from .routes.document_db_routes import document_db_bp
-from .routes.document_routes import document_bp
-from .routes.rag_routes import qa_bp
-from .routes.user_routes import user_bp
+from app.routes.document_db_routes import document_db_bp
+from app.routes.document_routes import document_bp
+from app.routes.rag_routes import qa_bp
+from app.routes.user_routes import user_bp
 from .extentions import db, ma, cors, jwt
 from flask_jwt_extended import JWTManager
 from .config import Config
