@@ -1,7 +1,7 @@
 import chromadb
 
-chroma_client = chromadb.PersistentClient(path="chroma_db")
-collection = chroma_client.get_or_create_collection(name='resumes')
+chroma_client = chromadb.PersistentClient(path="app/db/chroma_db")
+collection = chroma_client.get_or_create_collection(name='documents')
 
 def add_to_vectorstore(texts, ids, metadatas, embeddings):
     collection.add(documents=texts, metadatas=metadatas, ids=ids, embeddings=embeddings)
