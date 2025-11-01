@@ -8,7 +8,7 @@ import os
 pt.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 ocr_agent = lp.TesseractAgent(languages="eng")
 
-def extract_text_from_image(file_path: str) -> str:
+def extract_text(file_path: str) -> str:
     ext = os.path.splitext(file_path)[1].lower
 
     # Images
