@@ -3,14 +3,13 @@ from app.services.llm_service import llm
 from app.services.retrieval_service import retrieve_documents
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
-from langchain.schema import BaseRetriever
+from langchain.schema import BaseRetriever, Document
+from typing import List
 
 class CustomRetriever(BaseRetriever):
-    def __init__(self, user_email: str):
-        self.user_email = user_email
+    user_email: str  
 
-    # Wraps our retrieval logic for LangChain
-    def get_relevant_documents(self, query: str):
+    def _get_relevant_documents(self, query: str) -> List[Document]:
         return retrieve_documents(query, user_email=self.user_email)
 
 
@@ -35,7 +34,8 @@ Answer:
 """
 
 def generate_rag_response(query: str):
-    current_user = get_jwt_identity()
+    current_user = str(get_jwt_identity())
+    print("DEBUG: current_user =", current_user, type(current_user))
 
     retriever = CustomRetriever(user_email=current_user)
 

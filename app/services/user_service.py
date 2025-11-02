@@ -16,7 +16,5 @@ def Create_user(data):
     return user
 
 def Get_user_by_email(user_email):
-    user = User.query.get(user_email)
-    if not user:
-        return None
+    user = User.query.filter_by(email=user_email).first()
     return user

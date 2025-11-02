@@ -15,6 +15,7 @@ def ask_question():
     current_user = get_jwt_identity()  # logged-in user email
 
     try:
+        # Pass the user_email here
         response = generate_rag_response(query)
         return jsonify({
             "user": current_user,

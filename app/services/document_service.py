@@ -42,7 +42,7 @@ def get_document(file_id: str, user_email: str):
     return Document.query.filter_by(id=file_id, user_email=user_email).first()
 
 
-def get_all_documents(user_email: str):
+def get_all_documents_for_user(user_email: str):
     """
     Retrieve all documents belonging to a given user.
     """

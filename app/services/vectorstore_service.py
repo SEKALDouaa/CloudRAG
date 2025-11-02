@@ -8,6 +8,7 @@ def get_user_collection(user_email: str):
     """
     Retrieve or create a user-specific collection to isolate embeddings per user.
     """
+    print("DEBUG: user_email before replace =", user_email, type(user_email))
     # You can sanitize the name to avoid special character issues
     safe_name = user_email.replace("@", "_at_").replace(".", "_")
     collection_name = f"documents_{safe_name}"

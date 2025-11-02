@@ -2,14 +2,14 @@ import pytesseract as pt
 from PIL import Image
 import layoutparser as lp
 import fitz
-from Docx import Document
+from docx import Document
 import os
 
 pt.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 ocr_agent = lp.TesseractAgent(languages="eng")
 
 def extract_text(file_path: str) -> str:
-    ext = os.path.splitext(file_path)[1].lower
+    ext = os.path.splitext(file_path)[1].lower()
 
     # Images
     if ext in [".png", ".jpg", ".jpeg", ".bmp", ".tiff"]:

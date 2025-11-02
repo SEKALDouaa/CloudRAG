@@ -3,7 +3,7 @@ import re, ast
 from decouple import config
 
 genai.configure(api_key=config("GEMINI_API_KEY"))
-model = genai.GenerativeModel("models/gemini-1.5-flash-latest")
+model = genai.GenerativeModel("models/gemini-2.5-pro")
 
 def order_document_into_dictionary_LLM(raw_text: str):
     prompt = f"""
@@ -11,22 +11,21 @@ def order_document_into_dictionary_LLM(raw_text: str):
 
     Your output must be a single valid **Python dictionary** (not JSON) following this schema:
 
-    {
+    {{
     "document_type": "<inferred type, lowercase>",
-    "metadata": {
+    "metadata": {{
         "source_name": "",            # e.g. filename or source system
         "author": "",
         "date": "",
-        "language": "en",
-        "tags": []                    # keywords or inferred topics if present
-    },
+        "language": "",
+    }},
     "content": [
-        {
+        {{
         "section_title": "",        # section/heading if any
         "text": ""                  # plain cleaned text of that section
-        }
+        }}
     ]
-    }
+    }}
 
     ### Rules:
     1. Identify the **document type** (resume, invoice, contract, report, email, receipt, generic...).
@@ -39,21 +38,21 @@ def order_document_into_dictionary_LLM(raw_text: str):
     8. Output **only** the Python dictionary literal — no commentary, markdown, or code fences.
 
     Example:
-    {
+    {{
     "document_type": "contract",
-    "metadata": {
+    "metadata": {{
         "source_name": "contract_123.pdf",
         "author": "John Doe",
         "date": "June 5, 2024",
         "language": "en",
         "tags": ["agreement", "services"]
-    },
+    }},
     "content": [
-        {"section_title": "Introduction", "text": "This agreement is made between..."},
-        {"section_title": "Terms", "text": "The client agrees to..."},
-        {"section_title": "Termination", "text": "Either party may terminate..."}
+        {{"section_title": "Introduction", "text": "This agreement is made between..."}},
+        {{"section_title": "Terms", "text": "The client agrees to..."}},
+        {{"section_title": "Termination", "text": "Either party may terminate..."}}
     ]
-    }
+    }}
 
     Here is the document text:
     {raw_text}

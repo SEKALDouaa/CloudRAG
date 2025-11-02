@@ -1,4 +1,5 @@
 from ..extentions import db
+from app.models.user import User
 
 class Document(db.Model):
     id = db.Column(db.String, primary_key=True)

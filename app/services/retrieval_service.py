@@ -15,7 +15,7 @@ def retrieve_documents(query: str, user_email: str, k=5):
         List[Document]: LangChain Document objects with metadata.
     """
     query_embedding = embed_query(query)
-    raw_results = query_vectorstore(query_embedding, k)
+    raw_results = query_vectorstore(query_embedding, user_email, k)
 
     # Group chunks by document_id but only include those belonging to the user
     grouped = {}
@@ -26,7 +26,7 @@ def retrieve_documents(query: str, user_email: str, k=5):
 
         document_id = metadata.get("doc_id", "unknown_document")
         if document_id != "unknown_document":
-            metadata["document_url"] = f"http://localhost:5000/document/{document_id}"
+            metadata["document_url"] = f"http://localhost:5000/document_file/{document_id}"
         grouped.setdefault(document_id, []).append(text)
 
     grouped_docs = []
