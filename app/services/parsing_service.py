@@ -3,7 +3,7 @@ import re, ast
 from decouple import config
 
 genai.configure(api_key=config("GEMINI_API_KEY"))
-model = genai.GenerativeModel("models/gemini-2.5-pro")
+model = genai.GenerativeModel("models/gemini-2.5-flash")
 
 
 def split_text_smartly(raw_text: str, max_tokens=3000):
