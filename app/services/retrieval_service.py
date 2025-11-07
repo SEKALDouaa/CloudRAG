@@ -38,7 +38,7 @@ def retrieve_documents(query: str, user_email: str, k=5):
                 page_content=full_text,
                 metadata={
                     "document_id": document_id,
-                    "document_url": f"http://localhost:5000/document/{document_id}",
+                    "document_url": f"http://localhost:5000/document_file/{document_id}",
                     "num_chunks": len(texts),
                     "user_email": user_email
                 }
