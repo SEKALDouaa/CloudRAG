@@ -1,5 +1,6 @@
 from flask_jwt_extended import get_jwt_identity
-from app.services.llm_service import llm
+from app.services.llm_service import get_user_llm
+from app.services.user_service import Get_user_llm
 from app.services.retrieval_service import retrieve_documents
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
@@ -34,13 +35,20 @@ Answer:
 """
 
 def generate_rag_response(query: str):
+ 
     current_user = str(get_jwt_identity())
     print("DEBUG: current_user =", current_user, type(current_user))
+
+    user_settings = Get_user_llm(current_user)
+    user_llm = get_user_llm(
+        llm_model=user_settings.get("llm_model") if user_settings else None,
+        api_key=user_settings.get("api_key") if user_settings else None
+    )
 
     retriever = CustomRetriever(user_email=current_user)
 
     qa_chain = RetrievalQA.from_chain_type(
-        llm=llm,
+        llm=user_llm,
         retriever=retriever,
         chain_type="stuff",
         return_source_documents=True,
@@ -52,20 +60,18 @@ def generate_rag_response(query: str):
         }
     )
 
-    # Invoke the chain
     result = qa_chain.invoke({"query": query})
 
     answer_text = result["result"]
     source_docs = result.get("source_documents", [])
 
-    # Build a structured mapping of documents
     ranked_documents = []
     for idx, doc in enumerate(source_docs, start=1):
         doc_entry = {
             "rank": idx,
             "document_id": doc.metadata.get("document_id", f"doc_{idx}"),
             "document_url": doc.metadata.get("document_url", None),
-            "text_excerpt": doc.page_content[:300]  # optional preview
+            "text_excerpt": doc.page_content[:300]
         }
         ranked_documents.append(doc_entry)
 

@@ -1,8 +1,9 @@
 from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token
-from ..services.user_service import Create_user, Get_user_by_email
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from ..services.user_service import Create_user, Get_user_by_email, Update_user_llm
 from ..schemas.user_schema import UserSchema
+
 
 user_bp = Blueprint('user', __name__)
 user_schema = UserSchema()
@@ -30,3 +31,19 @@ def login():
 
     access_token = create_access_token(identity=user.email)
     return jsonify(access_token=access_token, email=user.email), 200
+
+@user_bp.route('/update-llm', methods=['PUT'])
+@jwt_required()
+def update_llm():
+    data = request.get_json()
+    current_user_email = get_jwt_identity()
+
+    llm_model = data.get("llm_model")
+    api_key = data.get("api_key")
+
+    user = Update_user_llm(current_user_email, llm_model=llm_model, api_key=api_key)
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    return jsonify({"message": "LLM settings updated successfully"}), 200

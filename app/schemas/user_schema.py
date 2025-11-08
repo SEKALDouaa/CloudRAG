@@ -7,5 +7,5 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
         include_fk = True
         include_relationships = True
-        load_only = ("password",)  # Exclude password from serialization
-        dump_only = ("id",)  # Exclude id from deserialization
+        load_only = ("password", "api_key")
+        dump_only = ("id",)

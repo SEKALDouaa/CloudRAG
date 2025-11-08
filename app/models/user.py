@@ -7,3 +7,5 @@ class User(db.Model):
     password = db.Column(db.String(100), nullable=False)
     numeroTel = db.Column(db.Integer, nullable=False)
     dateNaissance = db.Column(db.Date, nullable=False)
+    llm_model = db.Column(db.String(100), nullable=True)
+    api_key = db.Column(db.String(255), nullable=True) 
