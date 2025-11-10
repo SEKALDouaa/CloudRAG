@@ -1,5 +1,6 @@
 from app.services.embedding_service import embed_query
 from app.services.vectorstore_service import query_vectorstore
+from app.services.document_service import get_document
 from langchain.schema import Document
 
 def retrieve_documents(query: str, user_email: str, k=5):
@@ -33,11 +34,17 @@ def retrieve_documents(query: str, user_email: str, k=5):
 
     for document_id, texts in grouped.items():
         full_text = "\n\n---\n\n".join(texts)
+
+        # Get document metadata to retrieve file_name
+        doc_info = get_document(document_id, user_email)
+        file_name = doc_info.file_name if doc_info else document_id
+
         grouped_docs.append(
             Document(
                 page_content=full_text,
                 metadata={
                     "document_id": document_id,
+                    "file_name": file_name,
                     "document_url": f"http://localhost:5000/document_file/{document_id}",
                     "num_chunks": len(texts),
                     "user_email": user_email

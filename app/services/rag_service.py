@@ -70,6 +70,7 @@ def generate_rag_response(query: str):
         doc_entry = {
             "rank": idx,
             "document_id": doc.metadata.get("document_id", f"doc_{idx}"),
+            "file_name": doc.metadata.get("file_name", doc.metadata.get("document_id", f"doc_{idx}")),
             "document_url": doc.metadata.get("document_url", None),
             "text_excerpt": doc.page_content[:300]
         }
