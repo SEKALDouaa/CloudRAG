@@ -48,3 +48,22 @@ def get_all_documents_for_user(user_email: str):
     """
     docs = Document.query.filter_by(user_email=user_email).with_entities(Document.file_data).all()
     return [file_data for (file_data,) in docs]
+
+def get_all_documents_metadata(user_email: str):
+    """
+    Retrieve metadata for all documents belonging to a given user (without file_data).
+    """
+    return Document.query.filter_by(user_email=user_email).all()
+
+
+def delete_document(file_id: str, user_email: str):
+    """
+    Delete a document belonging to a given user.
+    Returns True if deleted, False if not found.
+    """
+    doc = Document.query.filter_by(id=file_id, user_email=user_email).first()
+    if doc:
+        db.session.delete(doc)
+        db.session.commit()
+        return True
+    return False
