@@ -1,7 +1,7 @@
 from flask_jwt_extended import get_jwt_identity
 from app.services.llm_service import get_user_llm
 from app.services.user_service import Get_user_llm
-from app.services.retrieval_service import retrieve_documents
+from app.services.retrieval_service import retrieve_documents,extract_mentioned_documents, map_filenames_to_ids
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
 from langchain.schema import BaseRetriever, Document
@@ -11,7 +11,16 @@ class CustomRetriever(BaseRetriever):
     user_email: str  
 
     def _get_relevant_documents(self, query: str) -> List[Document]:
-        return retrieve_documents(query, user_email=self.user_email)
+        
+        mentioned_filenames = extract_mentioned_documents(query)
+        specific_doc_ids = map_filenames_to_ids(mentioned_filenames, self.user_email)
+
+        return retrieve_documents(
+            query,
+            user_email=self.user_email,
+            k=5,
+            specific_doc_ids=specific_doc_ids
+        )
 
 
 # Prompt: structured and ranking-focused (document-agnostic)
