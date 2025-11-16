@@ -3,6 +3,7 @@ import Layout from './components/layout/Layout';
 import HomePage from './pages/HomePage';
 import DocumentsPage from './pages/DocumentsPage';
 import ChatPage from './pages/ChatPage';
+import ProfilePage from './pages/ProfilePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -31,6 +32,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ChatPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
               </ProtectedRoute>
             }
           />

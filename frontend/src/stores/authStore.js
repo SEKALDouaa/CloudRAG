@@ -12,13 +12,25 @@ const useAuthStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await authAPI.login({ email, password });
-      const { access_token, email: userEmail } = response.data;
+      const { access_token, email: userEmail, prenom, nom } = response.data;
 
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('user_email', userEmail);
 
+      // Sauvegarder le nom complet si disponible
+      if (prenom || nom) {
+        const fullName = `${prenom || ''} ${nom || ''}`.trim();
+        localStorage.setItem(`user_name_${userEmail}`, fullName);
+      }
+
+      // Enregistrer la date de première connexion si elle n'existe pas
+      const memberSinceKey = `member_since_${userEmail}`;
+      if (!localStorage.getItem(memberSinceKey)) {
+        localStorage.setItem(memberSinceKey, new Date().toISOString());
+      }
+
       set({
-        user: { email: userEmail },
+        user: { email: userEmail, name: `${prenom || ''} ${nom || ''}`.trim() },
         token: access_token,
         isAuthenticated: true,
         isLoading: false,
@@ -36,6 +48,13 @@ const useAuthStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       await authAPI.register(userData);
+
+      // Stocker le nom complet de l'utilisateur
+      if (userData.email && (userData.nom || userData.prenom)) {
+        const fullName = `${userData.prenom || ''} ${userData.nom || ''}`.trim();
+        localStorage.setItem(`user_name_${userData.email}`, fullName);
+      }
+
       set({ isLoading: false });
       return { success: true };
     } catch (error) {

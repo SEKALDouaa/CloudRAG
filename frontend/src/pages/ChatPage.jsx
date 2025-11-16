@@ -4,18 +4,25 @@ function ChatPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-indigo-900 relative overflow-hidden -mt-24 pt-24">
       {/* Decorative Elements */}
-      <div className="absolute bottom-20 left-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl"></div>
-      <div className="absolute top-20 right-10 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-500/5 rounded-full blur-3xl"></div>
 
-      <div className="max-w-4xl mx-auto px-6 py-20 relative z-10">
-        <h1 className="text-5xl font-bold text-white mb-4">
-          Chat RAG
-        </h1>
-        <p className="text-gray-300 text-lg mb-12">
-          Posez vos questions sur vos documents
-        </p>
+      <div className="relative z-10 flex flex-col" style={{ minHeight: 'calc(100vh - 96px)' }}>
+        {/* Header */}
+        <div className="px-8 pt-6 pb-4">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold text-white mb-2 bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent">
+              Chat RAG
+            </h1>
+            <p className="text-gray-300">
+              Posez vos questions sur vos documents
+            </p>
+          </div>
+        </div>
 
-        <div className="bg-indigo-900/30 backdrop-blur-sm border border-purple-500/30 rounded-2xl p-8 shadow-xl">
+        {/* Chat Interface */}
+        <div className="flex-1 px-4 pb-4 overflow-hidden">
           <ChatInterface />
         </div>
       </div>

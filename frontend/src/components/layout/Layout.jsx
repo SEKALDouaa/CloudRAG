@@ -17,6 +17,7 @@ function Layout() {
     { name: 'Accueil', link: '/', icon: Home },
     { name: 'Documents', link: '/documents', icon: FileText },
     { name: 'Chat', link: '/chat', icon: MessageSquare },
+    { name: 'Profil', link: '/profile', icon: User },
   ];
 
   const toggleMenu = () => {

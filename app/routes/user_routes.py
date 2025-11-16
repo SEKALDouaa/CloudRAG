@@ -30,7 +30,12 @@ def login():
         return jsonify({"message": "Invalid email or password"}), 401
 
     access_token = create_access_token(identity=user.email)
-    return jsonify(access_token=access_token, email=user.email), 200
+    return jsonify(
+        access_token=access_token,
+        email=user.email,
+        prenom=user.prenom,
+        nom=user.nom
+    ), 200
 
 @user_bp.route('/update-llm', methods=['PUT'])
 @jwt_required()
