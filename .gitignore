@@ -8,3 +8,7 @@ app/db/instance/
 
 # Fichiers temporaires
 nul
+
+.env
+__pycache__
+venv
