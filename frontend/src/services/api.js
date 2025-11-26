@@ -42,6 +42,7 @@ api.interceptors.response.use(
 export const authAPI = {
   register: (userData) => api.post('/register', userData),
   login: (credentials) => api.post('/login', credentials),
+  getLLM: () => api.get('/get-llm'),
   updateLLM: (llmData) => api.put('/update-llm', llmData),
 };
 

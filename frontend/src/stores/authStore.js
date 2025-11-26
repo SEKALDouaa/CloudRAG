@@ -7,6 +7,7 @@ const useAuthStore = create((set) => ({
   isAuthenticated: !!localStorage.getItem('access_token'),
   isLoading: false,
   error: null,
+  llmSettings: null,
 
   login: async (email, password) => {
     set({ isLoading: true, error: null });
@@ -74,11 +75,40 @@ const useAuthStore = create((set) => ({
     });
   },
 
+  fetchLLMSettings: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await authAPI.getLLM();
+      set({
+        llmSettings: response.data,
+        isLoading: false
+      });
+      return response.data;
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Erreur de récupération des paramètres';
+      set({
+        error: errorMessage,
+        isLoading: false
+      });
+      return null;
+    }
+  },
+
   updateLLM: async (llmModel, apiKey) => {
     set({ isLoading: true, error: null });
     try {
       await authAPI.updateLLM({ llm_model: llmModel, api_key: apiKey });
-      set({ isLoading: false });
+
+      // Met à jour les settings localement après succès
+      set({
+        llmSettings: {
+          llm_model: llmModel,
+          api_key: apiKey,
+          has_api_key: true
+        },
+        isLoading: false
+      });
+
       return { success: true };
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Erreur de mise à jour';

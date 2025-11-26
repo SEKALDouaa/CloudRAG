@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from ..services.user_service import Create_user, Get_user_by_email, Update_user_llm
+from ..services.user_service import Create_user, Get_user_by_email, Update_user_llm, Get_user_llm
 from ..schemas.user_schema import UserSchema
 
 
@@ -36,6 +36,25 @@ def login():
         prenom=user.prenom,
         nom=user.nom
     ), 200
+
+@user_bp.route('/get-llm', methods=['GET'])
+@jwt_required()
+def get_llm():
+    current_user_email = get_jwt_identity()
+    user_settings = Get_user_llm(current_user_email)
+
+    if not user_settings:
+        return jsonify({
+            "llm_model": None,
+            "api_key": None,
+            "has_api_key": False
+        }), 200
+
+    return jsonify({
+        "llm_model": user_settings.get("llm_model"),
+        "api_key": user_settings.get("api_key"),
+        "has_api_key": user_settings.get("api_key") is not None
+    }), 200
 
 @user_bp.route('/update-llm', methods=['PUT'])
 @jwt_required()

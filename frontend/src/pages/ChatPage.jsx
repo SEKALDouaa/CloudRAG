@@ -1,6 +1,10 @@
+import { useState } from 'react';
 import ChatInterface from '../components/ChatInterface';
+import LLMSettingsForm from '../components/LLMSettingsForm';
 
 function ChatPage() {
+  const [showSettings, setShowSettings] = useState(false);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-indigo-900 relative overflow-hidden -mt-24 pt-24">
       {/* Decorative Elements */}
@@ -18,7 +22,25 @@ function ChatPage() {
             <p className="text-gray-300">
               Posez vos questions sur vos documents
             </p>
+
+            {/* Bouton pour afficher/masquer les paramètres */}
+            <button
+              onClick={() => setShowSettings(!showSettings)}
+              className="mt-3 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm font-medium"
+            >
+              {showSettings ? '✕ Masquer les paramètres' : '⚙️ Paramètres API'}
+            </button>
           </div>
+
+          {/* Formulaire de configuration (collapsible) */}
+          {showSettings && (
+            <div className="mt-6 max-w-2xl mx-auto">
+              <LLMSettingsForm
+                compact={true}
+                onSuccess={() => setShowSettings(false)}
+              />
+            </div>
+          )}
         </div>
 
         {/* Chat Interface */}

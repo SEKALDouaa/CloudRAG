@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { User, Mail, Calendar, FileText, MessageSquare, Clock } from 'lucide-react';
 import useAuthStore from '../stores/authStore';
 import { documentsAPI } from '../services/api';
+import LLMSettingsForm from '../components/LLMSettingsForm';
 
 function ProfilePage() {
   const { user } = useAuthStore();
@@ -217,6 +218,11 @@ function ProfilePage() {
               <p className="text-white text-lg font-semibold">Standard</p>
             </div>
           </div>
+        </div>
+
+        {/* LLM Settings Section */}
+        <div className="mt-6">
+          <LLMSettingsForm />
         </div>
       </div>
     </div>
