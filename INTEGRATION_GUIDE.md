@@ -41,8 +41,12 @@
 
 #### Installation des dépendances
 ```bash
+# aprés pull
+cd app
+# créer l'environnement virtuel
+python -m venv .venv
+
 # Activer l'environnement virtuel
-cd C:\Users\nouha\Documents\CloudRAG
 .\venv\Scripts\activate
 
 # Installer les dépendances (si pas déjà fait)
