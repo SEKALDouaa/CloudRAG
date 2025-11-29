@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 import os
 from app.routes.document_db_routes import document_db_bp
 from app.routes.document_routes import document_bp
@@ -13,20 +13,28 @@ import torch
 jwt = JWTManager()
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='build', static_url_path='')
     app.config.from_object(Config)
     app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY')
-                                                  
+
     db.init_app(app)
     ma.init_app(app)
-    cors.init_app(app, resources={r"/*": {"origins": "http://localhost:5173"}}, supports_credentials=True)
+    cors.init_app(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
     jwt.init_app(app)
-    
-    app.register_blueprint(document_db_bp, url_prefix="/")
-    app.register_blueprint(qa_bp, url_prefix="/")
-    app.register_blueprint(document_bp, url_prefix="/")
-    app.register_blueprint(user_bp, url_prefix='/')
-    app.register_blueprint(chat_history_bp, url_prefix='/')
+
+    app.register_blueprint(document_db_bp, url_prefix="/api")
+    app.register_blueprint(qa_bp, url_prefix="/api")
+    app.register_blueprint(document_bp, url_prefix="/api")
+    app.register_blueprint(user_bp, url_prefix='/api')
+    app.register_blueprint(chat_history_bp, url_prefix='/api')
+
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve(path):
+        if path != "" and os.path.exists(app.static_folder + '/' + path):
+            return send_from_directory(app.static_folder, path)
+        else:
+            return send_from_directory(app.static_folder, 'index.html')
 
     # Forcer CPU avant tout import de modèles
     os.environ['CUDA_VISIBLE_DEVICES'] = ''
