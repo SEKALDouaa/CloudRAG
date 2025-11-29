@@ -22,8 +22,8 @@ FROM python:3.12-slim
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies required by opencv-python
-RUN apt-get update && apt-get install -y libgl1
+# Install system dependencies required by opencv-python and libgthread-2.0.so.0
+RUN apt-get update && apt-get install -y libgl1 libglib2.0-0
 
 # Install dependencies
 COPY app/requirements.txt .
@@ -44,4 +44,4 @@ EXPOSE 5000
 ENV JWT_SECRET_KEY=change-this-in-production
 
 # Command to run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "run:app"] 
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "run:app"]

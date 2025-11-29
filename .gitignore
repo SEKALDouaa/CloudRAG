@@ -15,3 +15,10 @@ __pycache__/
 venv/
 
 node_modules/
+.lightning_studio
+
+.vscode
+.idea
+.cursor-server
+.vscode-server
+.windsurf-server
