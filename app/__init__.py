@@ -8,6 +8,7 @@ from app.routes.chat_history_routes import chat_history_bp
 from .extentions import db, ma, cors, jwt
 from flask_jwt_extended import JWTManager
 from .config import Config
+import torch
 
 jwt = JWTManager()
 
@@ -26,6 +27,10 @@ def create_app():
     app.register_blueprint(document_bp, url_prefix="/")
     app.register_blueprint(user_bp, url_prefix='/')
     app.register_blueprint(chat_history_bp, url_prefix='/')
+
+    # Forcer CPU avant tout import de modèles
+    os.environ['CUDA_VISIBLE_DEVICES'] = ''
+    torch.set_default_device('cpu')
 
     with app.app_context():
         db.create_all()
