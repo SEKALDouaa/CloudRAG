@@ -1,11 +1,15 @@
 import google.generativeai as genai
 import re, ast
+import os
 from decouple import config
 from ..services.user_service import Get_user_llm
 from flask_jwt_extended import get_jwt_identity
 
-DEFAULT_API_KEY = config("GEMINI_API_KEY")
 DEFAULT_MODEL = "models/gemini-2.5-flash"
+
+def get_default_api_key():
+    """Lazy load the API key to allow app startup without it"""
+    return os.getenv("GEMINI_API_KEY") or config("GEMINI_API_KEY", default=None)
 
 
 def split_text_smartly(raw_text: str, max_tokens=3000):
@@ -56,7 +60,11 @@ def order_document_into_dictionary_LLM(raw_text: str, max_tokens=3000):
     api_key = user_settings.get("api_key") if user_settings else None
     llm_model = user_settings.get("llm_model") if user_settings else None
 
-    genai.configure(api_key=api_key or DEFAULT_API_KEY)
+    api_key_to_use = api_key or get_default_api_key()
+    if not api_key_to_use:
+        raise ValueError("GEMINI_API_KEY not provided. Please set the GEMINI_API_KEY environment variable or configure it in user settings.")
+    
+    genai.configure(api_key=api_key_to_use)
     model = genai.GenerativeModel(llm_model or DEFAULT_MODEL)
 
     all_chunks = split_text_smartly(raw_text, max_tokens=max_tokens)
