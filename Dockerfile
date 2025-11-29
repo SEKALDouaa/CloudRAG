@@ -43,5 +43,5 @@ EXPOSE 5000
 # You MUST override this environment variable with a strong, secret key in production.
 ENV JWT_SECRET_KEY=change-this-in-production
 
-# Command to run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "run:app"]
+# Command to run the application with increased timeout for LLM API calls
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--timeout", "300", "run:app"]
